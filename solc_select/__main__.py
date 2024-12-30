@@ -16,9 +16,11 @@ from .solc_select import (
     switch_global_version,
     current_version,
     installed_versions,
+    halt_incompatible_system,
     halt_old_architecture,
     upgrade_architecture,
 )
+
 
 # pylint: disable=too-many-branches
 def solc_select() -> None:
@@ -31,7 +33,7 @@ def solc_select() -> None:
     )
     parser_install.add_argument(
         INSTALL_VERSIONS,
-        help='specific versions you want to install "0.4.25" or "all"',
+        help='specific versions you want to install "0.4.25", "all" or "latest"',
         nargs="*",
         default=[],
         type=valid_install_arg,
@@ -60,17 +62,23 @@ def solc_select() -> None:
             install_artifacts(args.get(INSTALL_VERSIONS))
 
     elif args.get(USE_VERSION) is not None:
-        switch_global_version(args.get(USE_VERSION), args.get("always_install"))
+        switch_global_version(args.get(USE_VERSION), args.get("always_install"), silent=False)
 
     elif args.get(SHOW_VERSIONS) is not None:
-        res = current_version()
-        if res:
-            (current_ver, source) = res
-        for version in sorted(installed_versions(), key=lambda v: [int(s) for s in v.split(".")]):
-            if res and version == current_ver:
-                print(f"{version} (current, set by {source})")
-            else:
-                print(version)
+        versions_installed = installed_versions()
+        if versions_installed:
+            res = current_version()
+            if res:
+                (current_ver, source) = res
+            for version in sorted(versions_installed, key=lambda v: [int(s) for s in v.split(".")]):
+                if res and version == current_ver:
+                    print(f"{version} (current, set by {source})")
+                else:
+                    print(version)
+        else:
+            print(
+                "No solc version installed. Run `solc-select install --help` for more information"
+            )
     elif args.get(UPGRADE) is not None:
         upgrade_architecture()
     else:
@@ -79,11 +87,14 @@ def solc_select() -> None:
 
 
 def solc() -> None:
+    if not installed_versions():
+        switch_global_version(version="latest", always_install=True, silent=True)
     res = current_version()
     if res:
         (version, _) = res
         path = ARTIFACTS_DIR.joinpath(f"solc-{version}", f"solc-{version}")
         halt_old_architecture(path)
+        halt_incompatible_system()
         try:
             subprocess.run(
                 [str(path)] + sys.argv[1:],

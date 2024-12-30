@@ -7,7 +7,7 @@ Hi! Welcome to solc-select.
 Bug reports and feature suggestions can be submitted to our issue tracker. For bug reports, attaching the contract that caused the bug will help us in debugging and resolving the issue quickly. If you find a security vulnerability, do not open an issue; email opensource@trailofbits.com instead.
 
 ## Questions
-Questions can be submitted to the issue tracker, but you may get a faster response if you ask in our [chat room](https://empireslacking.herokuapp.com/) (in the #ethereum channel).
+Questions can be submitted to the issue tracker, but you may get a faster response if you ask in our [chat room](https://slack.empirehacking.nyc/) (in the #ethereum channel).
 
 ## Code 
 solc-select uses the pull request contribution model. Please make an account on Github, fork this repo, and submit code contributions via pull request. For more documentation, look [here](https://guides.github.com/activities/forking/).
@@ -39,19 +39,12 @@ These will also run in a github workflow on each platform.
 
 ## Developer Environment
 
+Run `make dev` to create your own development environment. 
+
 ```bash
-pip3 install virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
-mkvirtualenv --python=`which python3` solc-select-dev
 git clone https://github.com/crytic/solc-select.git
-cd solc-select 
-python setup.py develop
-```
-
-Start a shell using the solc-select virutal environment by running:
-
-```bash
-workon solc-select-dev
+cd solc-select
+make dev
 ```
 
 Update `solc-select` by running `git pull` from the `solc-select/` directory.
