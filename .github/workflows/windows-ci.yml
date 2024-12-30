@@ -16,12 +16,14 @@ jobs:
     strategy:
       matrix:
         python:
-          - "3.7"
           - "3.8"
           - "3.9"
-          - "3.10"                  
-        type: ["windows","solc"]
-    steps:    
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+        type: ["windows", "solc"]
+    steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
       with:
