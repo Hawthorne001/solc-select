@@ -20,6 +20,7 @@ from .solc_select import (
     halt_old_architecture,
     upgrade_architecture,
 )
+from .utils import sort_versions
 
 
 # pylint: disable=too-many-branches
@@ -54,9 +55,7 @@ def solc_select() -> None:
         versions = args.get(INSTALL_VERSIONS)
         if not versions:
             print("Available versions to install:")
-            for version in sorted(
-                get_installable_versions(), key=lambda v: [int(s) for s in v.split(".")]
-            ):
+            for version in sort_versions(get_installable_versions()):
                 print(version)
         else:
             install_artifacts(args.get(INSTALL_VERSIONS))
@@ -70,7 +69,7 @@ def solc_select() -> None:
             res = current_version()
             if res:
                 (current_ver, source) = res
-            for version in sorted(versions_installed, key=lambda v: [int(s) for s in v.split(".")]):
+            for version in sort_versions(versions_installed):
                 if res and version == current_ver:
                     print(f"{version} (current, set by {source})")
                 else:
