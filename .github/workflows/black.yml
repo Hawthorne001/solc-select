@@ -1,5 +1,5 @@
 ---
-name: Lint Code Base
+name: Lint Code Base (black)
 
 defaults:
   run:
@@ -15,8 +15,14 @@ on:
 
 jobs:
   build:
-    name: Lint Code Base
+    name: Lint Code Base (black)
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
 
     steps:
       - name: Checkout Code
@@ -33,7 +39,7 @@ jobs:
           cp pyproject.toml .github/linters
 
       - name: Black
-        uses: github/super-linter/slim@v5.0.0
+        uses: super-linter/super-linter/slim@v7.2.1
         if: always()
         env:
           # run linter on everything to catch preexisting problems
