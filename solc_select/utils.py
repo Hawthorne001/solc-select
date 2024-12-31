@@ -3,6 +3,8 @@ import subprocess
 import sys
 from typing import List
 
+from packaging.version import Version
+
 
 def mac_can_run_intel_binaries() -> bool:
     """Check if the Mac is Intel or M1 with available Rosetta. Will throw an exception if run on non-macOS."""
@@ -18,4 +20,4 @@ def mac_can_run_intel_binaries() -> bool:
 
 def sort_versions(versions: List[str]) -> List[str]:
     """Sorts a list of versions following the component order (major/minor/patch)"""
-    return sorted(versions, key=lambda v: [int(s) for s in v.split(".")])
+    return sorted(versions, key=Version)
