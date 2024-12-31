@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 use_version=$(solc-select use 0.3.6)
 if [[ $use_version != "Switched global version to 0.3.6"* ]]; then
@@ -16,14 +17,14 @@ if [[ $use_version != "Switched global version to $latest_release" ]]; then
 fi
 echo "OS X SUCCESS: set maximum version"
 
-use_version=$(solc-select use 0.3.5 2>&1)
+use_version=$(solc-select use 0.3.5 2>&1 || true)
 if [[ $use_version != *"Invalid version - only solc versions above '0.3.6' are available"* ]]; then
   echo "OS X FAILED: version too low"
   exit 255
 fi
 echo "OS X SUCCESS: version too low"
 
-use_version=$(solc-select use 0.100.8 2>&1)
+use_version=$(solc-select use 0.100.8 2>&1 || true)
 if [[ $use_version != *"Invalid version '$latest_release' is the latest available version"* ]]; then
   echo "OS X FAILED: version too high"
   exit 255
