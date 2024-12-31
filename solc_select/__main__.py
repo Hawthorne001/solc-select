@@ -66,6 +66,7 @@ def solc_select() -> None:
     elif args.get(SHOW_VERSIONS) is not None:
         versions_installed = installed_versions()
         if versions_installed:
+            (current_ver, source) = (None, None)
             res = current_version()
             if res:
                 (current_ver, source) = res

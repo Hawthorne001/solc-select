@@ -1,0 +1,92 @@
+---
+name: Lint Code Base
+
+defaults:
+  run:
+    # To load bashrc
+    shell: bash -ieo pipefail {0}
+
+on:
+  pull_request:
+    branches: [master, dev]
+  schedule:
+    # run CI every day even if no PRs/merges occur
+    - cron: '0 12 * * *'
+
+permissions:
+  contents: read
+  packages: read
+  # To report GitHub Actions status checks
+  statuses: write
+
+jobs:
+  pylint:
+    name: Lint Code Base (pylint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          mkdir -p .github/linters
+          cp pyproject.toml .github/linters
+
+      - name: Pylint
+        uses: super-linter/super-linter/slim@v7.2.1
+        if: always()
+        env:
+          # run linter on everything to catch preexisting problems
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Run only pylint
+          VALIDATE_PYTHON: true
+          VALIDATE_PYTHON_PYLINT: true
+          PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
+          FILTER_REGEX_EXCLUDE: .*tests/.*.(json|zip|sol)
+
+  black:
+    name: Lint Code Base (black)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          mkdir -p .github/linters
+          cp pyproject.toml .github/linters
+
+      - name: Black
+        uses: super-linter/super-linter/slim@v7.2.1
+        if: always()
+        env:
+          # run linter on everything to catch preexisting problems
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Run only black
+          VALIDATE_PYTHON_BLACK: true
+          PYTHON_BLACK_CONFIG_FILE: pyproject.toml
+          FILTER_REGEX_EXCLUDE: .*tests/.*.(json|zip|sol)
