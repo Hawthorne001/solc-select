@@ -20,6 +20,7 @@ from .solc_select import (
     halt_old_architecture,
     upgrade_architecture,
 )
+from .utils import sort_versions
 
 
 # pylint: disable=too-many-branches
@@ -68,7 +69,7 @@ def solc_select() -> None:
             res = current_version()
             if res:
                 (current_ver, source) = res
-            for version in reversed(sorted(versions_installed)):
+            for version in sort_versions(versions_installed):
                 if res and version == current_ver:
                     print(f"{version} (current, set by {source})")
                 else:

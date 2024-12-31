@@ -1,6 +1,9 @@
 import platform
 import subprocess
 import sys
+from typing import List
+
+from packaging.version import Version
 
 
 def mac_can_run_intel_binaries() -> bool:
@@ -13,3 +16,8 @@ def mac_can_run_intel_binaries() -> bool:
 
     # Intel Mac
     return True
+
+
+def sort_versions(versions: List[str]) -> List[str]:
+    """Sorts a list of versions following the component order (major/minor/patch)"""
+    return sorted(versions, key=Version)
