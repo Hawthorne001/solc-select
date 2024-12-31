@@ -1,7 +1,9 @@
 # solc-select
+
 A tool to quickly switch between Solidity compiler versions.
 
 The tool is split into two CLI utilities:
+
 - `solc-select`: manages installing and setting different `solc` compiler versions
 - `solc`: wrapper around `solc` which picks the right version according to what was set via `solc-select`
 
@@ -12,7 +14,7 @@ The versioned binaries are stored in `~/.solc-select/artifacts/`.
 
 ## Quickstart
 
-```
+```bash
 pip3 install solc-select
 ```
 
@@ -31,7 +33,8 @@ solc
 ```
 
 The global version of `solc` will automatically be set to to the latest version. You can reset this with the `solc-select use <version>` command:
-```
+
+```shell
 $ solc --version
 solc, the solidity compiler commandline interface
 Version: 0.5.2+commit.1df8f40c.Linux.g++
@@ -41,8 +44,10 @@ $ solc --version
 solc, the solidity compiler commandline interface
 Version: 0.4.24+commit.e67f0147.Linux.g++
 ```
+
 Use `SOLC_VERSION` environment variable to override the global version:
-```
+
+```shell
 $ solc --version
 solc, the solidity compiler commandline interface
 Version: 0.4.24+commit.e67f0147.Linux.g++
@@ -53,14 +58,15 @@ Version: 0.5.2+commit.1df8f40c.Linux.g++
 
 By default, solc-select will halt if you try to use a version that you do not have installed already. Use the `--always-install` flags to bypass this.
 
-```bash
-solc-select use 0.8.1 --always-install
+```shell
+$ solc-select use 0.8.1 --always-install
 Installing '0.8.1'...
 Version '0.8.1' installed.
 ```
 
 You can list all available versions with `solc-select install`:
-```
+
+```shell
 $ solc-select install
 Available versions to install:
 0.3.6
@@ -133,11 +139,14 @@ Our `0.2.1` version of `solc-select` pulls older Linux binaries from [crytic/sol
 ### `solc-select` version changes, but `solc --version does not match`
 
 Users seem to be experiencing situations in which the following command is successful:
-```
+
+```bash
 solc-select use <version>
 ```
+
 However, when running the following command, it points to an older version of Solidity.
-```
+
+```bash
 solc --version
 ```
 
