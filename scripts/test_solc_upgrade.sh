@@ -8,7 +8,7 @@ solc-select install 0.4.11 0.5.0 0.6.12 0.7.3 0.8.3
 all_old_versions=$(solc-select versions)
 
 ### Install new version of solc
-sudo python3 setup.py develop
+sudo pip3 install -e .
 new_solc_version=$(solc --version)
 all_new_versions=$(solc-select versions)
 

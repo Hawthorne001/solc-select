@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo python3 setup.py install
+sudo pip3 install .
 solc-select install all
 
 use_version=$(solc-select use 0.4.0)
