@@ -16,7 +16,7 @@ The versioned binaries are stored in `~/.solc-select/artifacts/`.
 pip3 install solc-select
 ```
 
-To automatically install and use a version, run `solc-select use <version> --always-install`. 
+To automatically install and use a version, run `solc-select use <version> --always-install`.
 
 ### Running on ARM (Mac M1/M2)
 
@@ -24,10 +24,10 @@ To automatically install and use a version, run `solc-select use <version> --alw
 
 ## Usage
 
-By default, `solc-select` will install the most recent available Solidity file for your version. This will automatically be done when you run `solc` for the first time. 
+By default, `solc-select` will install the most recent available Solidity file for your version. This will automatically be done when you run `solc` for the first time.
 
-```bash 
-solc 
+```bash
+solc
 ```
 
 The global version of `solc` will automatically be set to to the latest version. You can reset this with the `solc-select use <version>` command:
@@ -51,9 +51,9 @@ solc, the solidity compiler commandline interface
 Version: 0.5.2+commit.1df8f40c.Linux.g++
 ```
 
-By default, solc-select will halt if you try to use a version that you do not have installed already. Use the `--always-install` flags to bypass this. 
+By default, solc-select will halt if you try to use a version that you do not have installed already. Use the `--always-install` flags to bypass this.
 
-```bash 
+```bash
 solc-select use 0.8.1 --always-install
 Installing '0.8.1'...
 Version '0.8.1' installed.
@@ -102,7 +102,7 @@ Uninstall other installations of solc on your machine. `solc-select` re-installs
 
 You might be using an old version of `solc-select` or Python if you are seeing this error message. The current stable release supports Windows; try upgrading your `solc-select` installation with the following command.
 
-```bash 
+```bash
 pip install --upgrade solc-select
 ```
 
@@ -121,27 +121,27 @@ Python distributions on OS X has no certificates and cannot validate SSL connect
 ### `Connection refused` [investigation ongoing]
 
 ```bash
-pip3 uninstall solc-select 
+pip3 uninstall solc-select
 pip3 install solc-select==0.2.0
-solc-select install 
+solc-select install
 ```
 
-Try downgrading to `solc-select version 0.2.0`. 
+Try downgrading to `solc-select version 0.2.0`.
 
 Our `0.2.1` version of `solc-select` pulls older Linux binaries from [crytic/solc](https://github.com/crytic/solc) which seems to have introduced unexpected behavior in certain instances.
 
 ### `solc-select` version changes, but `solc --version does not match`
 
-Users seem to be experiencing situations in which the following command is successful: 
+Users seem to be experiencing situations in which the following command is successful:
 ```
-solc-select use <version> 
+solc-select use <version>
 ```
 However, when running the following command, it points to an older version of Solidity.
 ```
 solc --version
 ```
 
-`solc-select` is intended to work with custom binaries. This means that Solidity installed through other means (i.e: `brew install solidity`) will _not_ work!. 
+`solc-select` is intended to work with custom binaries. This means that Solidity installed through other means (i.e: `brew install solidity`) will _not_ work!.
 
 Uninstall other versions Solidity from your computer.
 
