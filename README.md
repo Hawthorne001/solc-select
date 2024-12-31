@@ -116,25 +116,26 @@ pip install --upgrade solc-select
 
 ### `SSL: CERTIFICATE_VERIFY_FAILED` on running `solc-select` commands [investigation ongoing]
 
-**OS X**
+**OS X**: Python distributions on OS X has no certificates and cannot validate SSL connections, a breaking change introduced in Python 3.6. See [StackOverflow](https://stackoverflow.com/a/42334357) post for additional details.
+
+The following commands may resolve the issue; adjust the Python version to the one installed on your system:
+
 ```bash
 pip3 install certifi
 /Applications/Python\ 3.8/Install\ Certificates.command
 ```
 
-Python distributions on OS X has no certificates and cannot validate SSL connections, a breaking change introduced in Python 3.6. See [StackOverflow](https://stackoverflow.com/a/42334357) post for additional details.
-
 ### `Connection refused` [investigation ongoing]
+
+Our `0.2.1` version of `solc-select` pulls older Linux binaries from [crytic/solc](https://github.com/crytic/solc) which seems to have introduced unexpected behavior in certain instances. Apparently, [certain ISPs such as Jio](https://github.com/crytic/solc-select/issues/205#issuecomment-1825171056) may be blocking access to certain GitHub domains. If possible, try using a different Internet provider to see if it resolves the problem.
+
+Alternatively, try downgrading to `solc-select version 0.2.0`.
 
 ```bash
 pip3 uninstall solc-select
 pip3 install solc-select==0.2.0
 solc-select install
 ```
-
-Try downgrading to `solc-select version 0.2.0`.
-
-Our `0.2.1` version of `solc-select` pulls older Linux binaries from [crytic/solc](https://github.com/crytic/solc) which seems to have introduced unexpected behavior in certain instances.
 
 ### `solc-select` version changes, but `solc --version does not match`
 
