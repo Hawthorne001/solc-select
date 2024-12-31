@@ -98,17 +98,12 @@ If it is not installed, it can be installed with the command
 
 Uninstall other installations of solc on your machine. `solc-select` re-installs solc binaries for your operating system and acts as a wrapper for solc. With duplicate solc installations, this may result in your `solc` version not being up to date.
 
-### "Unsupported Platform" on Windows 
+### "Unsupported Platform" on Windows
 
-The solc-select version that supports Windows is currently in beta. Uninstall `solc-select` through `pip3 uninstall solc-select` and run 
+You might be using an old version of `solc-select` or Python if you are seeing this error message. The current stable release supports Windows; try upgrading your `solc-select` installation with the following command.
 
 ```bash 
-pip install solc-select==1.0.0b1
-```
-
-Alternatively, for the most up-to-date version, clone this repository and run 
-```bash 
-pip install . --user
+pip install --upgrade solc-select
 ```
 
 ## Known Issues
