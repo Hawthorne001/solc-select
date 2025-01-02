@@ -1,9 +1,20 @@
+from pathlib import Path
 import platform
 import subprocess
 import sys
 from typing import List
 
 from packaging.version import Version
+
+
+def mac_binary_is_universal(path: Path):
+    """Check if the Mac binary is Universal or not. Will throw an exception if run on non-macOS."""
+    assert sys.platform == "darwin"
+    result = subprocess.run(["/usr/bin/file", str(path)], capture_output=True, check=False)
+    is_universal = all(
+        text in result.stdout.decode() for text in ("Mach-O universal binary", "x86_64", "arm64")
+    )
+    return result.returncode == 0 and is_universal
 
 
 def mac_can_run_intel_binaries() -> bool:
