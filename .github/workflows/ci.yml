@@ -11,19 +11,17 @@ on:
     - cron:  '0 12 * * *'
 
 jobs:
-  linux:
-    name: CI (Linux)
-    runs-on: ubuntu-latest
+  tests:
+    name: CI (Python ${{ matrix.python }} on ${{ matrix.os }}, ${{ matrix.type }} test)
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
-        python:
-          - "3.8"
-          - "3.9"
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
-        type: ["solc_upgrade", "linux", "solc"]
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        os: ["ubuntu-latest", "macos-latest", "windows-2022"]
+        type: ["solc", "solc_upgrade", "os_specific"]
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
@@ -31,67 +29,11 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Install solc-select
       run: |
-        sudo pip install .
+        ${{ (matrix.os != 'windows-2022' && 'sudo pip install .') || 'pip install . --user' }}
         solc-select install all
     - name: Run Tests
       env:
-        TEST_TYPE: ${{ matrix.type }}
+        TEST_TYPE: ${{ (matrix.type != 'os_specific' && matrix.type) || runner.os }}
       run: |
+        TEST_TYPE="$(echo "$TEST_TYPE" | tr '[:upper:]' '[:lower:]')"
         bash scripts/test_${TEST_TYPE}.sh
-
-  macos:
-    name: CI (macOS)
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        python:
-          - "3.8"
-          - "3.9"
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
-        type: ["solc_upgrade", "macos", "solc"]
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python }}
-    - name: Install solc-select
-      run: |
-        sudo pip install .
-        solc-select install all
-    - name: Run Tests
-      env:
-        TEST_TYPE: ${{ matrix.type }}
-      run: |
-        bash scripts/test_${TEST_TYPE}.sh
-
-  windows:
-    name: CI (Windows)
-    runs-on: windows-2022
-    strategy:
-      matrix:
-        python:
-          - "3.8"
-          - "3.9"
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
-        type: ["windows", "solc"]
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python }}
-    - name: Install solc-select
-      run: |
-        pip install . --user
-        solc-select install all
-    - name: Run Tests
-      env:
-        TEST_TYPE: ${{ matrix.type }}
-      run: |
-        bash scripts/test_${TEST_TYPE}.sh
-      shell: bash
