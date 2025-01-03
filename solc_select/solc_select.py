@@ -20,7 +20,7 @@ from .constants import (
     CRYTIC_SOLC_ARTIFACTS,
     CRYTIC_SOLC_JSON,
 )
-from .utils import mac_can_run_intel_binaries
+from .utils import mac_binary_is_universal, mac_can_run_intel_binaries
 
 Path.mkdir(ARTIFACTS_DIR, parents=True, exist_ok=True)
 
@@ -32,10 +32,19 @@ def halt_old_architecture(path: Path) -> None:
         )
 
 
-def halt_incompatible_system() -> None:
-    if soliditylang_platform() == MACOSX_AMD64 and not mac_can_run_intel_binaries():
+def halt_incompatible_system(path: Path) -> None:
+    if soliditylang_platform() == MACOSX_AMD64:
+        # If Rosetta is available, we can run all solc versions
+        if mac_can_run_intel_binaries():
+            return
+
+        # If this is a newer universal solc (>=0.8.24) we can always run it
+        # https://github.com/ethereum/solidity/issues/12291#issuecomment-2223328961
+        if mac_binary_is_universal(path):
+            return
+
         raise argparse.ArgumentTypeError(
-            "solc binaries for macOS are Intel-only. Please install Rosetta on your Mac to continue. Refer to the solc-select README for instructions."
+            "solc binaries previous to 0.8.24 for macOS are Intel-only. Please install Rosetta on your Mac to continue. Refer to the solc-select README for instructions."
         )
     # TODO: check for Linux aarch64 (e.g. RPi), presence of QEMU+binfmt
 

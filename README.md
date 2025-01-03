@@ -22,7 +22,7 @@ To automatically install and use a version, run `solc-select use <version> --alw
 
 ### Running on ARM (Mac M1/M2)
 
-`solc` requires Rosetta to be installed. See the FAQ on [how to install Rosetta](#oserror-errno-86-bad-cpu-type-in-executable).
+`solc` older than 0.8.24 requires Rosetta to be installed. See the FAQ on [how to install Rosetta](#oserror-errno-86-bad-cpu-type-in-executable).
 
 ## Usage
 
@@ -85,10 +85,12 @@ Feel free to stop by our [Slack channel](https://empirehacking.slack.com/) for h
 ### OSError: [Errno 86] Bad CPU type in executable
 
 On newer `solc-select` versions, this might show as `solc binaries for macOS are
-Intel-only. Please install Rosetta on your Mac to continue.`
+Intel-only. Please install Rosetta on your Mac to continue.` or `solc binaries
+previous to 0.8.24 for macOS are Intel-only. Please install Rosetta on your Mac
+to continue.`
 
-`solc` requires Rosetta to be installed. To see whether you have Rosetta
-installed on your Mac, run
+`solc` releases earlier than 0.8.24 require Rosetta to be installed. To see
+whether you have Rosetta installed on your Mac, run
 
 ```bash
 pgrep -q oahd && echo Rosetta is installed || echo Rosetta is NOT installed
