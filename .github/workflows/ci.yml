@@ -18,9 +18,6 @@ jobs:
   tests:
     name: CI (Python ${{ matrix.python }} on ${{ matrix.os }}, ${{ matrix.type }} test)
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        shell: bash
     strategy:
       matrix:
         python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
@@ -32,15 +29,20 @@ jobs:
       id: python
       with:
         python-version: ${{ matrix.python }}
-    - name: Install solc-select
+    - name: Create Python virtual environment
       run: |
         ${{ steps.python.outputs.python-path }} -m venv test-venv
-        source test-venv/bin/activate
+    - name: Install solc-select
+      shell: bash
+      run: |
+        source test-venv/${{ (runner.os == 'Windows' && 'Scripts') || 'bin' }}/activate
+        python -m pip install --upgrade pip
         pip3 install .
     - name: Run Tests
+      shell: bash
       env:
         TEST_TYPE: ${{ (matrix.type != 'os_specific' && matrix.type) || runner.os }}
       run: |
-        source test-venv/bin/activate
+        source test-venv/${{ (runner.os == 'Windows' && 'Scripts') || 'bin' }}/activate
         TEST_TYPE="$(echo "$TEST_TYPE" | tr '[:upper:]' '[:lower:]')"
         bash scripts/test_${TEST_TYPE}.sh

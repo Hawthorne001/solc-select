@@ -92,7 +92,7 @@ if [[ "$execute" != *"Error: Explicit type conversion not allowed"* ]]; then
 fi
 echo "SUCCESS: solc080_fail_compile"
 
-UNINSTALL_PATH=$HOME/.solc-select/artifacts/solc-0.8.9
+UNINSTALL_PATH=${VIRTUAL_ENV:-$HOME}/.solc-select/artifacts/solc-0.8.9
 rm -rf $UNINSTALL_PATH{,.exe} # uninstall solc 0.8.9
 execute=$(solc-select use 0.8.9 --always-install)
 if [[ "$execute" != *"Switched global version to 0.8.9"* ]]; then
@@ -101,7 +101,7 @@ if [[ "$execute" != *"Switched global version to 0.8.9"* ]]; then
 fi
 echo "SUCCESS: use - always install"
 
-UNINSTALL_PATH=$HOME/.solc-select/artifacts/solc-0.8.1
+UNINSTALL_PATH=${VIRTUAL_ENV:-$HOME}/.solc-select/artifacts/solc-0.8.1
 rm -rf $UNINSTALL_PATH{,.exe} # uninstall solc 0.8.1
 execute=$(solc-select use 0.8.1 2>&1 || true)
 if [[ $execute != *"'0.8.1' must be installed prior to use"* ]]; then
