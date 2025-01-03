@@ -58,7 +58,8 @@ def solc_select() -> None:
             for version in get_installable_versions():
                 print(version)
         else:
-            install_artifacts(args.get(INSTALL_VERSIONS))
+            status = install_artifacts(args.get(INSTALL_VERSIONS))
+            sys.exit(0 if status else 1)
 
     elif args.get(USE_VERSION) is not None:
         switch_global_version(args.get(USE_VERSION), args.get("always_install"), silent=False)
