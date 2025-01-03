@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-sudo pip3 install .
 solc-select install all
 
 use_version=$(solc-select use 0.4.0)

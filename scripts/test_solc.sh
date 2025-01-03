@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+solc-select install 0.4.5 0.5.0 0.6.0 0.7.0 0.8.0 0.8.1 0.8.9
+
 ## solc 0.4.5 ##
 solc-select use 0.4.5  &> /dev/null
 solc ./scripts/solidity_tests/solc045_success.sol
@@ -90,8 +92,8 @@ if [[ "$execute" != *"Error: Explicit type conversion not allowed"* ]]; then
 fi
 echo "SUCCESS: solc080_fail_compile"
 
-UNINSTALL_PATH=$HOME/.solc-select/artifacts/solc-0.8.9
-rm -rf $UNINSTALL_PATH # uninstall solc 0.8.9
+UNINSTALL_PATH=${VIRTUAL_ENV:-$HOME}/.solc-select/artifacts/solc-0.8.9
+rm -rf $UNINSTALL_PATH{,.exe} # uninstall solc 0.8.9
 execute=$(solc-select use 0.8.9 --always-install)
 if [[ "$execute" != *"Switched global version to 0.8.9"* ]]; then
   echo "FAILED: use - always install"
@@ -99,8 +101,8 @@ if [[ "$execute" != *"Switched global version to 0.8.9"* ]]; then
 fi
 echo "SUCCESS: use - always install"
 
-UNINSTALL_PATH=$HOME/.solc-select/artifacts/solc-0.8.1
-rm -rf $UNINSTALL_PATH # uninstall solc 0.8.1
+UNINSTALL_PATH=${VIRTUAL_ENV:-$HOME}/.solc-select/artifacts/solc-0.8.1
+rm -rf $UNINSTALL_PATH{,.exe} # uninstall solc 0.8.1
 execute=$(solc-select use 0.8.1 2>&1 || true)
 if [[ $execute != *"'0.8.1' must be installed prior to use"* ]]; then
   echo "FAILED: use - no install"

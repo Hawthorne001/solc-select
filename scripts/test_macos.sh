@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+solc-select install all
+
 use_version=$(solc-select use 0.3.6)
 if [[ $use_version != "Switched global version to 0.3.6"* ]]; then
   echo "OS X FAILED: set minimum version"
