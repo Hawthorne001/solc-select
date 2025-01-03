@@ -2,15 +2,16 @@
 set -euo pipefail
 
 ### Install old version of solc
-sudo pip3 uninstall --yes solc-select
-sudo pip3 install solc-select
+pip3 uninstall --yes solc-select
+pip3 install solc-select
 solc-select use 0.8.0 --always-install
 old_solc_version=$(solc --version)
 solc-select install 0.4.11 0.5.0 0.6.12 0.7.3 0.8.3
 all_old_versions=$(solc-select versions | sort)
 
 ### Install new version of solc
-sudo pip3 install -e .
+pip3 uninstall --yes solc-select
+pip3 install -e .
 new_solc_version=$(solc --version)
 all_new_versions=$(solc-select versions | sort)
 

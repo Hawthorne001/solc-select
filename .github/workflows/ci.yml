@@ -29,15 +29,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
+      id: python
       with:
         python-version: ${{ matrix.python }}
     - name: Install solc-select
       run: |
-        ${{ (matrix.os != 'windows-2022' && 'sudo pip install .') || 'pip install . --user' }}
-        solc-select install all
+        ${{ steps.python.outputs.python-path }} -m venv test-venv
+        source test-venv/bin/activate
+        pip3 install .
     - name: Run Tests
       env:
         TEST_TYPE: ${{ (matrix.type != 'os_specific' && matrix.type) || runner.os }}
       run: |
+        source test-venv/bin/activate
         TEST_TYPE="$(echo "$TEST_TYPE" | tr '[:upper:]' '[:lower:]')"
         bash scripts/test_${TEST_TYPE}.sh

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+solc-select install 0.4.5 0.5.0 0.6.0 0.7.0 0.8.0 0.8.1 0.8.9
+
 ## solc 0.4.5 ##
 solc-select use 0.4.5  &> /dev/null
 solc ./scripts/solidity_tests/solc045_success.sol
